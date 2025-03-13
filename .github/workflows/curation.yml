@@ -1,0 +1,59 @@
+name: BugSigDB Cuation
+on:
+  issues:
+    types: [opened, labeled] 
+
+jobs:
+
+  curation-comment:
+    if: github.event.label.name == 'bugsigdb curation'
+    permissions:
+      issues: write
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.5"
+
+      - name: Get issue body
+        run: echo ${{ github.event.issue.body }}
+
+#      - name: Get study data
+#        run: |
+#          doi <- "10.1186/s40168-024-02020-7"
+#          crossref <- paste("https://api.crossref.org/works", doi, sep = "/")
+#          
+#          resp <- httr2::request(crossref) |>
+#            httr2::req_perform() |>
+#            httr2::resp_body_json(simplifyVector = TRUE)
+#          
+#          author <- ""
+#          
+#          if ('author' %in% names(resp$message)) {
+#            author <- paste(resp$message$author$given[1],
+#                            resp$message$author$family[1],
+#                            sep = ", ")
+#          }
+#          
+#          eutils <- paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/",
+#                           "esearch.fcgi?db=pubmed&term=",
+#                           doi, "[DOI]&retmode=json")
+#          
+#          resp <- httr2::request(eutils) |>
+#            httr2::req_perform() |>
+#            httr2::resp_body_json(simplifyVector = TRUE)
+#          
+#          pmid <- resp$esearchresult$idlist
+#        shell: Rscript {0}
+#
+#      - run: gh issue comment "$NUMBER" --body "$BODY"
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          GH_REPO: ${{ github.repository }}
+#          NUMBER: ${{ github.event.issue.number }}
+#          BODY: >
+#            Lorem ipsum is placeholder text commonly used in the graphic, print,
+#            and publishing industries for previewing layouts and visual mockups.
