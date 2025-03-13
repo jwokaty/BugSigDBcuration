@@ -1,7 +1,7 @@
 name: BugSigDB Cuation
 on:
   issues:
-    types: [opened, labeled] 
+    types: [opened, edited] 
 
 jobs:
 
@@ -22,7 +22,7 @@ jobs:
         run: echo ${{ github.event.issue.body }}
 
 #      - name: Get study data
-#        run: |
+#        run: 
 #          doi <- "10.1186/s40168-024-02020-7"
 #          crossref <- paste("https://api.crossref.org/works", doi, sep = "/")
 #          
