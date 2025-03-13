@@ -6,7 +6,6 @@ on:
 jobs:
 
   curation-comment:
-    if: github.event.label.name == 'bugsigdb curation'
     permissions:
       issues: write
     env:
