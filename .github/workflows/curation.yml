@@ -85,14 +85,14 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: ${{ steps.get-doi.outputs.TITLE}}
+              title: "${{ steps.get-doi.outputs.TITLE }}"
             })
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 
-                `# ${{ steps.get-doi.outputs.TITLE}}
+                `# ${{ steps.get-doi.outputs.TITLE }}
                 ## DOI
                 ${{ steps.get-doi.outputs.DOI }}
                 ## PMID
