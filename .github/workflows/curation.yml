@@ -76,10 +76,10 @@ jobs:
             httr2::resp_body_json(simplifyVector = TRUE)
           
           pmid <- er$esearchresult$idlist
-          system(paste0("echo DOI=", doi, " >> $GITHUB_OUTPUT"))
-          system(paste0("echo AUTHOR=", author, " >> $GITHUB_OUTPUT"))
-          system(paste0("echo TITLE=", title, " >> $GITHUB_OUTPUT"))
-          system(paste0("echo JOURNAL=", journal, " >> $GITHUB_OUTPUT"))
+          system(paste0("echo DOI='", doi, "' >> $GITHUB_OUTPUT"))
+          system(paste0("echo AUTHOR='", author, "' >> $GITHUB_OUTPUT"))
+          system(paste0("echo TITLE='", title, "' >> $GITHUB_OUTPUT"))
+          system(paste0("echo JOURNAL='", journal, "' >> $GITHUB_OUTPUT"))
           system(paste0("echo YEAR=", year, " >> $GITHUB_OUTPUT"))
           system(paste0("echo PMID=", pmid, " >> $GITHUB_OUTPUT"))
           print(paste("DOI:", doi))
