@@ -25,8 +25,8 @@ jobs:
         id: get-doi
         run: |
           encodeQuotes <- function(s) {
-            s <- str_replace_all(s, "'", "&apos;")
-            s <- str_replace_all(s, '"', "&quot;")
+            s <- stringr::str_replace_all(s, "'", "&apos;")
+            s <- stringr::str_replace_all(s, '"', "&quot;")
             s
           }
           
