@@ -86,11 +86,11 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 
-                "👋 Thanks for submitting!
+                `👋 Thanks for submitting!
                 DOI: ${{ steps.get-doi.outputs.DOI }}
                 PMID: ${{ steps.get-doi.outputs.PMID}}
                 TITLE: ${{ steps.get-doi.outputs.TITLE}}
                 AUTHOR: ${{ steps.get-doi.outputs.AUTHOR }}
                 JOURNAL: ${{ steps.get-doi.outputs.JOURNAL}}
-                YEAR: ${{ steps.get-doi.outputs.YEAR }}"
+                YEAR: ${{ steps.get-doi.outputs.YEAR }}`
             })
