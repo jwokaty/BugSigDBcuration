@@ -104,7 +104,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 
-              """
+              `
               ### Study
               ${{ steps.get-doi.outputs.TITLE }}
 
@@ -124,5 +124,5 @@ jobs:
               ${{ steps.get-doi.outputs.YEAR }}
 
               👋 Thanks for submitting!
-              """
+              `
             })
