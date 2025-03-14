@@ -22,6 +22,7 @@ jobs:
       - name: Get DOI
         id: get-doi
         run: |
+          doi_comment <- ""
           comments <- stringr::str_split("${{ github.event.issue.body }}", "\n", simplify = TRUE)
           for (comment in comments) {
             if (stringr::str_detect(comment, "doi:")) {
