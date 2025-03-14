@@ -81,16 +81,28 @@ jobs:
         with:
           #github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            github.rest.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: ${{ steps.get-doi.outputs.TITLE}}
+            })
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 
-                `👋 Thanks for submitting!
-                DOI: ${{ steps.get-doi.outputs.DOI }}
-                PMID: ${{ steps.get-doi.outputs.PMID}}
-                TITLE: ${{ steps.get-doi.outputs.TITLE}}
-                AUTHOR: ${{ steps.get-doi.outputs.AUTHOR }}
-                JOURNAL: ${{ steps.get-doi.outputs.JOURNAL}}
-                YEAR: ${{ steps.get-doi.outputs.YEAR }}`
+                `# ${{ steps.get-doi.outputs.TITLE}}
+                ## DOI
+                ${{ steps.get-doi.outputs.DOI }}
+                ## PMID
+                ${{ steps.get-doi.outputs.PMID}}
+                ## Author
+                ${{ steps.get-doi.outputs.AUTHOR }}
+                ## Journal
+                ${{ steps.get-doi.outputs.JOURNAL}}
+                ## Year
+                ${{ steps.get-doi.outputs.YEAR }}
+
+                👋 Thanks for submitting!`
             })
