@@ -24,6 +24,12 @@ jobs:
       - name: Get DOI
         id: get-doi
         run: |
+          encodeQuotes <- function(s) {
+            s <- str_replace_all(s, "'", "&apos;")
+            s <- str_replace_all(s, '"', "&quot;")
+            s
+          }
+          
           doi <- ""
           comments <- stringr::str_split("${{ github.event.issue.body }}", "\n", simplify = TRUE)
           for (comment in comments) {
@@ -39,7 +45,7 @@ jobs:
             httr2::resp_body_json(simplifyVector = TRUE)
 
           title <- ifelse("title" %in% names(cr$message),
-            cr$message$title,
+            encodeQuotes(cr$message$title),
             "")
 
           year <- ifelse("published" %in% names(cr$message),
@@ -47,18 +53,18 @@ jobs:
             "")
 
           journal <- ifelse("container-title" %in% names(cr$message),
-            cr$message$`container-title`[[1]],
+            encodeQuotes(cr$message$`container-title`[[1]]),
             "")
 
           author <- ""
           if ('author' %in% names(cr$message)) {
-            author <- paste(cr$message$author$given[1],
-                            cr$message$author$family[1],
+            author <- paste(encodeQuotes(cr$message$author$given[1]),
+                            encodeQuotes(cr$message$author$family[1]),
                             sep = " ")
           }
 
           source <- ifelse("resource" %in% names(cr$message),
-                           cr$message$resource$primary$URL,
+                           encodeQuotes(cr$message$resource$primary$URL),
                            "")
           
           eutils <- paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/",
