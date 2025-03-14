@@ -36,13 +36,27 @@ jobs:
           crossref_resp <- httr2::request(crossref) |>
             httr2::req_perform() |>
             httr2::resp_body_json(simplifyVector = TRUE)
-          
+
+          title <- ifelse("title" %in% resp$message, $resp$message$title, '')
+
+          year <- ifelse("published" %in% resp$message,
+            resp$message$published$`date-parts`[1],
+            "")
+
+          journal <- ifelse("container-title" %in% resp$message,
+            resp$message$`container-title`
+            "")
+
           author <- ""
           if ('author' %in% names(crossref_resp$message)) {
             author <- paste(crossref_resp$message$author$given[1],
                             crossref_resp$message$author$family[1],
                             sep = " ")
           }
+
+          source <- ifelse("resource" %in% crossref_resp$message,
+                           crossref_resp$message$resource$primary$URL,
+                           "")
           
           eutils <- paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/",
                            "esearch.fcgi?db=pubmed&term=",
@@ -54,7 +68,10 @@ jobs:
           
           pmid <- eutils_resp$esearchresult$idlist
           print(doi)
+          print(title)
           print(author)
+          print(journal)
+          print(year)
           print(pmid)
         shell: Rscript {0}
 #
