@@ -47,7 +47,7 @@ jobs:
             "")
 
           journal <- ifelse("container-title" %in% names(cr$message),
-            cr$message$`container-title`,
+            cr$message$`container-title`[[1]],
             "")
 
           author <- ""
