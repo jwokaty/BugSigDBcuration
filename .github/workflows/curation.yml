@@ -17,7 +17,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-         apt update && apt install -y curl
          Rscript -e "install.packages(c('stringr', 'httr2'), repos = 'https://cloud.r-project.org', dependencies = TRUE)"
 
       - name: Get DOI
