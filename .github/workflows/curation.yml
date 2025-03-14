@@ -69,12 +69,12 @@ jobs:
             httr2::resp_body_json(simplifyVector = TRUE)
           
           pmid <- eutils_resp$esearchresult$idlist
-          system(paste0("echo DOI=", doi, " >> $GITHUB_OUTPUT"))
-          system(paste0("echo AUTHOR=", author, " >> $GITHUB_OUTPUT"))
-          system(paste0("echo TITLE=", title, " >> $GITHUB_OUTPUT"))
-          system(paste0("echo JOURNAL=", journal, " >> $GITHUB_OUTPUT"))
-          system(paste0("echo YEAR=", year, " >> $GITHUB_OUTPUT"))
-          system(paste0("echo PMID=", pmid, " >> $GITHUB_OUTPUT"))
+          system(paste0("echo DOI=", doi, " >> $GITHUB_ENV"))
+          system(paste0("echo AUTHOR=", author, " >> $GITHUB_ENV"))
+          system(paste0("echo TITLE=", title, " >> $GITHUB_ENV"))
+          system(paste0("echo JOURNAL=", journal, " >> $GITHUB_ENV"))
+          system(paste0("echo YEAR=", year, " >> $GITHUB_ENV"))
+          system(paste0("echo PMID=", pmid, " >> $GITHUB_ENV"))
           print(doi)
           print(title)
           print(author)
@@ -85,7 +85,7 @@ jobs:
 
       - name: Comment
         run: |
-          echo "DOI: $doi"
+          echo "DOI: $DOI"
 
 #      - run: gh issue comment "$NUMBER" --body "$BODY"
 #        env:
