@@ -18,40 +18,40 @@ jobs:
       - name: Get DOI
         id: get-doi
         run: |
-          doi=`echo ${{ github.event.issue.body }} | grep "doi" | awk -F ":" "{print $2}"`
-          echo "DOI=$doi" >> $GITHUB_OUTPUT
+          comments <- str_split("${{ github.event.issue.body }}", "\n", simplify = TRUE)
+          for (comment in comments) {
+            if (str_detect(comment, "doi:")) {
+              doi_comment <- comment
+              break
+            }  
+          }
+          doi <- str_split(doi_comment, ":", simplify = TRUE)[2]
 
-      - name: Print DOI
-        run: |
-          echo "Is this your doi: ${{ steps.get-doi.outputs.DOI }}?"
-
-#      - name: Get study data
-#        run: |
-#          doi <- "10.1186/s40168-024-02020-7"
-#          crossref <- paste("https://api.crossref.org/works", doi, sep = "/")
-#          
-#          resp <- httr2::request(crossref) |>
-#            httr2::req_perform() |>
-#            httr2::resp_body_json(simplifyVector = TRUE)
-#          
-#          author <- ""
-#          
-#          if ('author' %in% names(resp$message)) {
-#            author <- paste(resp$message$author$given[1],
-#                            resp$message$author$family[1],
-#                            sep = ", ")
-#          }
-#          
-#          eutils <- paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/",
-#                           "esearch.fcgi?db=pubmed&term=",
-#                           doi, "[DOI]&retmode=json")
-#          
-#          resp <- httr2::request(eutils) |>
-#            httr2::req_perform() |>
-#            httr2::resp_body_json(simplifyVector = TRUE)
-#          
-#          pmid <- resp$esearchresult$idlist
-#        shell: Rscript {0}
+          crossref <- paste("https://api.crossref.org/works", doi, sep = "/")
+          crossref_resp <- httr2::request(crossref) |>
+            httr2::req_perform() |>
+            httr2::resp_body_json(simplifyVector = TRUE)
+          
+          author <- ""
+          if ('author' %in% names(crossref_resp$message)) {
+            author <- paste(crossref_resp$message$author$given[1],
+                            crossref_resp$message$author$family[1],
+                            sep = " ")
+          }
+          
+          eutils <- paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/",
+                           "esearch.fcgi?db=pubmed&term=",
+                           doi, "[DOI]&retmode=json")
+          
+          eutils_resp <- httr2::request(eutils) |>
+            httr2::req_perform() |>
+            httr2::resp_body_json(simplifyVector = TRUE)
+          
+          pmid <- eutils_resp$esearchresult$idlist
+          print(doi)
+          print(author)
+          print(pmid)
+        shell: Rscript {0}
 #
 #      - run: gh issue comment "$NUMBER" --body "$BODY"
 #        env:
