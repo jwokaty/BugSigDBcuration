@@ -75,23 +75,14 @@ jobs:
           system(paste0("echo JOURNAL=", journal, " >> $GITHUB_ENV"))
           system(paste0("echo YEAR=", year, " >> $GITHUB_ENV"))
           system(paste0("echo PMID=", pmid, " >> $GITHUB_ENV"))
-          print(doi)
-          print(title)
-          print(author)
-          print(journal)
-          print(year)
-          print(pmid)
         shell: Rscript {0}
 
-      - name: Comment
-        run: |
-          echo "DOI: $DOI"
-
-#      - run: gh issue comment "$NUMBER" --body "$BODY"
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          GH_REPO: ${{ github.repository }}
-#          NUMBER: ${{ github.event.issue.number }}
-#          BODY: >
-#            Lorem ipsum is placeholder text commonly used in the graphic, print,
-#            and publishing industries for previewing layouts and visual mockups.
+      - run: gh issue comment "$NUMBER" --body "$BODY"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          BODY: >
+            DOI: $DOI
+            TITLE: $TITLE
+            PMID: $PMID
