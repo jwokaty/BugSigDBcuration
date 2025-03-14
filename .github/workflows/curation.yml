@@ -1,7 +1,9 @@
 name: BugSigDB Cuation
 on:
   issues:
-    types: [opened, edited] 
+    types: [opened] 
+#  issues_comment:
+#    types: [created]
 
 jobs:
 
@@ -22,53 +24,52 @@ jobs:
       - name: Get DOI
         id: get-doi
         run: |
-          doi_comment <- ""
+          doi <- ""
           comments <- stringr::str_split("${{ github.event.issue.body }}", "\n", simplify = TRUE)
           for (comment in comments) {
-            if (stringr::str_detect(comment, "doi:")) {
-              doi_comment <- comment
+            if (stringr::str_detect(comment, "[0-9.]+/[A-Za-z0-9.-]+")) {
+              doi <- comment
               break
             }  
           }
-          doi <- stringr::str_split(doi_comment, ":", simplify = TRUE)[2]
 
           crossref <- paste("https://api.crossref.org/works", doi, sep = "/")
-          crossref_resp <- httr2::request(crossref) |>
+          cr <- httr2::request(crossref) |>
             httr2::req_perform() |>
             httr2::resp_body_json(simplifyVector = TRUE)
 
-          title <- ifelse("title" %in% names(crossref_resp$message),
-            crossref_resp$message$title,
+          title <- ifelse("title" %in% names(cr$message),
+            cr$message$title,
             "")
 
-          year <- ifelse("published" %in% names(crossref_resp$message),
-            crossref_resp$message$published$`date-parts`[1],
+          year <- ifelse("published" %in% names(cr$message),
+            cr$message$published$`date-parts`[1],
             "")
 
-          journal <- ifelse("container-title" %in% names(crossref_resp$message),
-            crossref_resp$message["container-title"][[1]],
+          journal <- ifelse("container-title" %in% names(cr$message),
+            cr$message["container-title"][[1]],
             "")
 
           author <- ""
-          if ('author' %in% names(crossref_resp$message)) {
-            author <- paste(crossref_resp$message$author$given[1],
-                            crossref_resp$message$author$family[1],
+          if ('author' %in% names(cr$message)) {
+            author <- paste(cr$message$author$given[1],
+                            cr$message$author$family[1],
                             sep = " ")
           }
 
-          source <- ifelse("resource" %in% names(crossref_resp$message),
-                           crossref_resp$message$resource$primary$URL,
+          source <- ifelse("resource" %in% names(cr$message),
+                           cr$message$resource$primary$URL,
                            "")
           
           eutils <- paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/",
                            "esearch.fcgi?db=pubmed&term=",
                            doi, "[DOI]&retmode=json")
           
-          eutils_resp <- httr2::request(eutils) |>
+          er <- httr2::request(eutils) |>
             httr2::req_perform() |>
             httr2::resp_body_json(simplifyVector = TRUE)
           
-          pmid <- eutils_resp$esearchresult$idlist
+          pmid <- er$esearchresult$idlist
           system(paste0("echo DOI=", doi, " >> $GITHUB_OUTPUT"))
           system(paste0("echo AUTHOR=", author, " >> $GITHUB_OUTPUT"))
           system(paste0("echo TITLE=", title, " >> $GITHUB_OUTPUT"))
@@ -79,7 +80,6 @@ jobs:
 
       - uses: actions/github-script@v7
         with:
-          #github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.rest.issues.update({
               issue_number: context.issue.number,
@@ -92,24 +92,24 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 
-                `
-                ## Study
-                ${{ steps.get-doi.outputs.TITLE }}
+              `
+              ### Study
+              ${{ steps.get-doi.outputs.TITLE }}
 
-                ## DOI
-                ${{ steps.get-doi.outputs.DOI }}
+              ### DOI
+              ${{ steps.get-doi.outputs.DOI }}
 
-                ## PMID
-                ${{ steps.get-doi.outputs.PMID}}
+              ### PMID
+              ${{ steps.get-doi.outputs.PMID}}
 
-                ## Author
-                ${{ steps.get-doi.outputs.AUTHOR }}
+              ### Author
+              ${{ steps.get-doi.outputs.AUTHOR }}
 
-                ## Journal
-                ${{ steps.get-doi.outputs.JOURNAL}}
+              ### Journal
+              ${{ steps.get-doi.outputs.JOURNAL}}
 
-                ## Year
-                ${{ steps.get-doi.outputs.YEAR }}
+              ### Year
+              ${{ steps.get-doi.outputs.YEAR }}
 
-                👋 Thanks for submitting!`
+              👋 Thanks for submitting!`
             })
