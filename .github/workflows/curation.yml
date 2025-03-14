@@ -69,21 +69,28 @@ jobs:
             httr2::resp_body_json(simplifyVector = TRUE)
           
           pmid <- eutils_resp$esearchresult$idlist
-          system(paste0("echo DOI=", doi, " >> $GITHUB_ENV"))
-          system(paste0("echo AUTHOR=", author, " >> $GITHUB_ENV"))
-          system(paste0("echo TITLE=", title, " >> $GITHUB_ENV"))
-          system(paste0("echo JOURNAL=", journal, " >> $GITHUB_ENV"))
-          system(paste0("echo YEAR=", year, " >> $GITHUB_ENV"))
-          system(paste0("echo PMID=", pmid, " >> $GITHUB_ENV"))
+          system(paste0("echo DOI=", doi, " >> $GITHUB_OUTPUT"))
+          system(paste0("echo AUTHOR=", author, " >> $GITHUB_OUTPUT"))
+          system(paste0("echo TITLE=", title, " >> $GITHUB_OUTPUT"))
+          system(paste0("echo JOURNAL=", journal, " >> $GITHUB_OUTPUT"))
+          system(paste0("echo YEAR=", year, " >> $GITHUB_OUTPUT"))
+          system(paste0("echo PMID=", pmid, " >> $GITHUB_OUTPUT"))
         shell: Rscript {0}
 
       - uses: actions/github-script@v7
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          #github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "👋 Thanks for submitting!\nDOI: $DOI\n TITLE: $TITLE\n PMID: $PMID"
+              body: |
+                👋 Thanks for submitting!
+                DOI: ${{ steps.get-doi.outputs.DOI }}
+                PMID: ${{ steps.get-doi.outputs.PMID}}
+                TITLE: ${{ steps.get-doi.outputs.TITLE}}
+                AUTHOR: ${{ steps.get-doi.outputs.AUTHOR }}
+                JOURNAL: ${{ steps.get-doi.outputs.JOURNAL}}
+                YEAR: ${{ steps.get-doi.outputs.YEAR }}
             })
