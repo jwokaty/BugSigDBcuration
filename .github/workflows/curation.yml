@@ -17,18 +17,19 @@ jobs:
 
       - name: Install stringr
         run: install.packages("stringr", repos = "https://cloud.r-project.org")
+        shell: Rscript {0}
 
       - name: Get DOI
         id: get-doi
         run: |
-          comments <- str_split("${{ github.event.issue.body }}", "\n", simplify = TRUE)
+          comments <- stringr::str_split("${{ github.event.issue.body }}", "\n", simplify = TRUE)
           for (comment in comments) {
-            if (str_detect(comment, "doi:")) {
+            if (stringr::str_detect(comment, "doi:")) {
               doi_comment <- comment
               break
             }  
           }
-          doi <- str_split(doi_comment, ":", simplify = TRUE)[2]
+          doi <- stringr::str_split(doi_comment, ":", simplify = TRUE)[2]
 
           crossref <- paste("https://api.crossref.org/works", doi, sep = "/")
           crossref_resp <- httr2::request(crossref) |>
