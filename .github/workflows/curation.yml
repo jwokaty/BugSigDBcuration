@@ -17,7 +17,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-         Rscript -e "install.packages(c('stringr', 'httr2'), repos = 'https://cloud.r-project.org', dependencies = TRUE)"
+         Rscript -e "install.packages(c('stringr', 'httr2'), repos = 'https://cloud.r-project.org', dependencies = c('Depends', 'Imports'))"
 
       - name: Get DOI
         id: get-doi
