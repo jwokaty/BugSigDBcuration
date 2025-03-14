@@ -37,14 +37,16 @@ jobs:
             httr2::req_perform() |>
             httr2::resp_body_json(simplifyVector = TRUE)
 
-          title <- ifelse("title" %in% resp$message, $resp$message$title, '')
-
-          year <- ifelse("published" %in% resp$message,
-            resp$message$published$`date-parts`[1],
+          title <- ifelse("title" %in% crossref_resp$message,
+            crossref_resp$message$title,
             "")
 
-          journal <- ifelse("container-title" %in% resp$message,
-            resp$message$`container-title`
+          year <- ifelse("published" %in% crossref_resp$message,
+            crossref_resp$message$published$`date-parts`[1],
+            "")
+
+          journal <- ifelse("container-title" %in% crossref_resp$message,
+            crossref_resp$message$`container-title`
             "")
 
           author <- ""
