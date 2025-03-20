@@ -94,7 +94,7 @@ jobs:
           system(paste0("echo YEAR=", year, " >> $GITHUB_OUTPUT"))
           system(paste0("echo PMID=", pmid, " >> $GITHUB_OUTPUT"))
 
-          print(paste("DOI:", doi "PMID:", pmid, "TITLE:", title, "AUTHOR:", author, "JOURNAL:", journal, "YEAR:", year))
+          print(paste("DOI:", doi, "PMID:", pmid, "TITLE:", title, "AUTHOR:", author, "JOURNAL:", journal, "YEAR:", year))
         shell: Rscript {0}
 
       - uses: actions/github-script@v7
