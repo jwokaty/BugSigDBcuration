@@ -3,7 +3,7 @@ description: |
   File a study curation by DOI. Attempts to automatically fetch study
   information.
 title: "[Study]: New Curation"
-labels: ["bugsigdb", "curation"]
+labels: ["paper to curate"]
 projects: ["BugSigDB"]
 body:
   - type: markdown
