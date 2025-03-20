@@ -1,9 +1,7 @@
-name: BugSigDB Cuation
+name: Data for BugSigDB Curation by DOI
 on:
   issues:
     types: [opened] 
-#  issues_comment:
-#    types: [created]
 
 jobs:
 
@@ -98,7 +96,7 @@ jobs:
         shell: Rscript {0}
 
       - uses: actions/github-script@v7
-        if: steps.get-doi.outputs.DOI
+        if: steps.get-doi.outputs.DOI != ''
         with:
           script: |
             github.rest.issues.update({
@@ -113,7 +111,7 @@ jobs:
               repo: context.repo.repo,
               body: 
               `
-              ### Study
+              ### Title
               ${{ steps.get-doi.outputs.TITLE }}
 
               ### DOI
