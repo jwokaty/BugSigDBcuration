@@ -1,4 +1,4 @@
-name: BugSigDB study curation
+name: BugSigDB study curation via DOI
 description: File a study curation.
 title: "[Study]: New Curation"
 labels: ["bugsigdb", "curation"]
