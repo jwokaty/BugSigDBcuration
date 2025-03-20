@@ -13,8 +13,7 @@ body:
     attributes:
       label: The Digital Object Identifier (DOI)
       description: |
-        Enter the DOI or prefix and suffix. For example, for example,
-        if your DOI is https://doi.org/10.1000/182, enter you may enter
+        Enter the DOI or prefix and suffix. For example, if your DOI is https://doi.org/10.1000/182, you may enter
         "https://doi.org/10.1000/182" or "10.1000/182".
       placeholder: https://doi.org/xxxxx
     validations:

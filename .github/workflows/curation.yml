@@ -17,7 +17,17 @@ jobs:
 
     steps:
 
+      - name: Cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path:
+            /usr/local/lib/R/site-library
+            /usr/local/lib/R/library
+          key: ${{ runner.os }}-bugsigdb-curation
+
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
          Rscript -e "install.packages(c('stringr', 'httr2'), repos = 'https://cloud.r-project.org', dependencies = c('Depends', 'Imports'))"
 
