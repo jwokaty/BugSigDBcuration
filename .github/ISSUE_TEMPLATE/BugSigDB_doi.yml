@@ -1,5 +1,7 @@
-name: BugSigDB study curation via DOI
-description: File a study curation.
+name: BugSigDB study curation by DOI
+description: |
+  File a study curation by DOI. Attempts to automatically fetch study
+  information.
 title: "[Study]: New Curation"
 labels: ["bugsigdb", "curation"]
 projects: ["BugSigDB"]
@@ -8,12 +10,17 @@ body:
     attributes:
       value: |
         Thanks for submitting this study for curation!
+        
+        When you submit this form, a GitHub Action will attempt to find the
+        title, first author, year of publication, and PMID. If it fails, you
+        can manually submit a study curation.
   - type: input
     id: doi
     attributes:
       label: The Digital Object Identifier (DOI)
       description: |
-        Enter the DOI or prefix and suffix. For example, if your DOI is https://doi.org/10.1000/182, you may enter
+        Enter the DOI or prefix and suffix. For example, if your DOI is
+        https://doi.org/10.1000/182, you may enter
         "https://doi.org/10.1000/182" or "10.1000/182".
       placeholder: https://doi.org/xxxxx
     validations:

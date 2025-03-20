@@ -1,5 +1,5 @@
 name: BugSigDB study curation
-description: File a study curation.
+description: Manually file a study curation.
 title: "[Study]: "
 labels: ["bugsigdb", "curation"]
 projects: ["BugSigDB"]
