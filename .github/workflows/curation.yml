@@ -48,6 +48,7 @@ jobs:
           }
 
           doi <- ""
+          comments <- stringr::str_split("${{ github.event.issue.body }}", "\n", simplify = TRUE)
           for (comment in comments) {
             doi <- stringr::str_squish(comment) |> stringr::str_extract("[0-9.]+/[A-Za-z0-9.-]+")
             if (!is.na(doi))
